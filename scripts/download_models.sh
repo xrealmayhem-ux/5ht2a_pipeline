@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Descarga modelos desde Zenodo a modelos/ (reemplaza el symlink cross-repo).
-# Layout creado (coincide con scripts/checksums.txt):
-#   modelos/chemeleon/checkpoints/pki/seed_{1..5}/{pki-best-*.ckpt,scaler.pt,train_predictions.csv}
+# Setup productivo single-model (seed_2). Layout creado
+# (coincide con scripts/checksums.txt, ~130MB):
+#   modelos/chemeleon/checkpoints/pki/seed_2/{pki-best-*.ckpt,scaler.pt}
 #   modelos/reinvent_stage2.chkpt
+# El umbral p90 de incertidumbre va hardcodeado en scorer_pki.py
+# (ENSEMBLE_P90_FALLBACK); no se descargan train_predictions.csv.
 # Uso:
 #   bash scripts/download_models.sh --dest modelos --record <ZENODO_RECORD_ID>
 #   (cd modelos && sha256sum -c ../scripts/checksums.txt)

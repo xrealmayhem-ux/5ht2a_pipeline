@@ -35,7 +35,9 @@ generacion:
   inception_smiles: ""  # opcional
 
 chemprop:
-  seeds: [1, 2, 3, 4, 5]
+  # Productivo: single model seed_2 (mejor test). El ensemble 1-5 queda
+  # como experimento no publicado; el scorer acepta ambos.
+  seeds: [2]
   max_epochs: 50
   # Smoke test rápido (no toca checkpoints productivos):
   smoke_limit: 200

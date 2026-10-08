@@ -34,13 +34,14 @@ snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 
 ## Modelos (Zenodo, no Git)
 
-16 archivos (~605MB, `sha256sum -c scripts/checksums.txt`):
-* `chemeleon/checkpoints/pki/seed_{1..5}/pki-best-*.ckpt` (107M c/u, ensemble productivo)
-* `chemeleon/checkpoints/pki/seed_{1..5}/scaler.pt` + `train_predictions.csv`
-  (el scorer exige los 5 `train_predictions.csv` para el umbral p90 de incertidumbre)
+3 archivos (~130MB, `sha256sum -c scripts/checksums.txt`):
+* `chemeleon/checkpoints/pki/seed_2/pki-best-epoch=16-val_loss=0.3912.ckpt` (107M,
+  mejor test: RMSE 0.747, R² 0.669) + `scaler.pt`
 * `reinvent_stage2.chkpt` (23M, agente generativo final para muestrear)
+* El umbral p90 de incertidumbre (`0.29146`) va hardcodeado en `scorer_pki.py`
+  (`ENSEMBLE_P90_FALLBACK`); no se descargan `train_predictions.csv`.
 * NO se suben: `chemeleon_mp.pt` (citar record `15460715`), `reinvent.prior`
-  (externo), `last.ckpt`, `stage1.chkpt`, `tl.model`, CSVs/logs/`tb_*/`.
+  (externo), `last.ckpt`, `stage1.chkpt`, `tl.model`, otras seeds, CSVs/logs/`tb_*/`.
 
 ## Datos versionados en Git (<1MB)
 
@@ -50,5 +51,5 @@ snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 ## Reproducibilidad
 
 Envs pineados por rule (`workflow/envs/*.yaml`), seeds fijas
-(`chemprop.seeds: [1,2,3,4,5]`, `seed: 42` solo para smoke), split scaffold persistido
+(`chemprop.seeds: [2]` productivo, `seed: 42` solo para smoke), split scaffold persistido
 (`split_indices.csv`).

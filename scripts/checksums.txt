@@ -1,21 +1,10 @@
 # Zenodo record (rellenar zenodo.record en config/config.yaml al publicar).
 # Layout de descarga en modelos/ — verificar con:
 #   (cd modelos && sha256sum -c ../scripts/checksums.txt)
-# Total: 16 archivos (~605MB). train_predictions.csv es obligatorio:
-# scorer_pki.py lo exige (5/5) para el umbral de incertidumbre p90.
-1e4ec5272f2ffc5d2065d762ab3d87405c68c6de86708b8081ed57296a3838cc  chemeleon/checkpoints/pki/seed_1/pki-best-epoch=16-val_loss=0.3840.ckpt
+# Setup productivo: single model seed_2 (mejor test: RMSE 0.747, R2 0.669).
+# Total: 3 archivos (~130MB). El umbral p90 de incertidumbre (0.29146)
+# va hardcodeado en scorer_pki.py (ENSEMBLE_P90_FALLBACK); no necesita
+# train_predictions.csv.
 3d19d842c10ae75e79bd995a01030fc82fabdda5735a8cdb6d1d3fb7c6bef488  chemeleon/checkpoints/pki/seed_2/pki-best-epoch=16-val_loss=0.3912.ckpt
-460a22c8c5cb35e239e609bdeef5881b891ff6f9615be235396643506b72e8ee  chemeleon/checkpoints/pki/seed_3/pki-best-epoch=20-val_loss=0.3879.ckpt
-51449a0003308c07f71242c0fd2542679530f53cf917493740e656dd18171095  chemeleon/checkpoints/pki/seed_4/pki-best-epoch=8-val_loss=0.3871.ckpt
-3d14642209ca50fc58d8fbe1062864fef6ebb8c91c50715c00a537a1965f87f0  chemeleon/checkpoints/pki/seed_5/pki-best-epoch=17-val_loss=0.3830.ckpt
-90c0b2c2b95aea337c519d7eaa6be94ba44223b9c9ba69afcf43647f121a5a42  chemeleon/checkpoints/pki/seed_1/scaler.pt
 90c0b2c2b95aea337c519d7eaa6be94ba44223b9c9ba69afcf43647f121a5a42  chemeleon/checkpoints/pki/seed_2/scaler.pt
-90c0b2c2b95aea337c519d7eaa6be94ba44223b9c9ba69afcf43647f121a5a42  chemeleon/checkpoints/pki/seed_3/scaler.pt
-90c0b2c2b95aea337c519d7eaa6be94ba44223b9c9ba69afcf43647f121a5a42  chemeleon/checkpoints/pki/seed_4/scaler.pt
-8f562de4114aff5672e2e0a0326a9f31e5b14ee6e2315af8bdd956a59dfe1e07  chemeleon/checkpoints/pki/seed_5/scaler.pt
-2aa7b0196b01daf6a26850dd0d6779b0a5c33a9ceed5b376c165cd58bf46c219  chemeleon/checkpoints/pki/seed_1/train_predictions.csv
-8efdfa3c3b283fed4c6f57364c162dd69c2959085e068c440112e7185a9d75ef  chemeleon/checkpoints/pki/seed_2/train_predictions.csv
-048c3c7ea4d79381f5d44f4e3d65334336b039617b9e3164213fa98dba000335  chemeleon/checkpoints/pki/seed_3/train_predictions.csv
-cea62ad857bc62a82acf98639178800ce32de098ef22285cdbdba60368d2fc49  chemeleon/checkpoints/pki/seed_4/train_predictions.csv
-bbbf5ab913e9dbfe239798fd7841bcd9e48afb6a9450c4f95aaccfadb90d194f  chemeleon/checkpoints/pki/seed_5/train_predictions.csv
 c33ccea4295ab834f95d72689bc9d020231fd6fea0257be43f78c2127d314df0  reinvent_stage2.chkpt
