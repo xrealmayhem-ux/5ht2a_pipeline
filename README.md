@@ -1,6 +1,5 @@
 # 5-HT2A pipeline (generación + chemprop + filter + admet)
 
-Monorepo Snakemake. **Docking queda afuera** (repo aparte `docking_5ht2a`).
 
 ## Frontera
 
