@@ -1,0 +1,15 @@
+name: chemprop
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - chemprop==2.1.0
+      - pytorch-lightning==2.4.0
+      - torch==2.4.0
+      - rdkit==2024.03.6
+      - pandas==2.2.2
+      - numpy==1.26.4
+      - pyyaml==6.0.1

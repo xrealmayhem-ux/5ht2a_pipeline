@@ -1,0 +1,57 @@
+# 5-HT2A pipeline — configuración local (NO versionar valores privados).
+# Copiar desde config.yaml.template y ajustar rutas.
+
+seed: 42
+device: cuda  # cuda | cpu
+
+paths:
+  # Raíz del checkout actual p01 (modo transición: el monorepo orquesta
+  # los módulos que aún viven en carpetas hermanas). En clon fresco,
+  # estos módulos ya viven dentro del monorepo (ver README).
+  repo_root: ".."
+  generacion_dir: "../AI_drugdiscovery/generacion"
+  chemprop_dir: "../chemprop/regressionMPNN_5ht2a/chemeleon"
+  filter_dir: "../filter"
+  admet_dir: "../admet_ai_filter"
+  # Destino de modelos descargados desde Zenodo (reemplaza el symlink
+  # generacion/modelos/chemeleon -> ../../../chemprop/...).
+  models_dir: "modelos"
+  prior_file: "modelos/reinvent.prior"
+
+data:
+  tl_smiles: "../AI_drugdiscovery/generacion/datos/tl_smiles.smi"
+  pki_raw_gpcrdb: "../chemprop/regressionMPNN_5ht2a/data/raw/GPCRdb_pvalue.xlsx"
+  pki_raw_chembl: "../chemprop/regressionMPNN_5ht2a/data/raw/df_chembl.csv"
+
+generacion:
+  batch_size: 256
+  s1_steps: 500
+  tl_epochs: 20
+  s2_steps: 1000
+  inception_smiles: ""  # opcional
+
+chemprop:
+  seeds: [42, 1, 2, 3, 4]
+  max_epochs: 50
+  # Smoke test rápido (no toca checkpoints productivos):
+  smoke_limit: 200
+  smoke_epochs: 1
+
+filter:
+  score_cutoff: null  # ej. 0.5 para filtrar Score REINVENT
+  max_mols: null
+  max_stereoisomers: 8
+  sa_score_cutoff: 4.5
+  smiles_col: "SMILES"
+
+admet:
+  smiles_col: "SMILES"
+  risk_cutoff: 0.50
+  # Endpoints de exclusión dura (filter_safety.py):
+  risk_endpoints: ["hERG", "AMES", "DILI", "Carcinogens_Lagunin"]
+
+zenodo:
+  # DOI / record de los checkpoints pKi + reinvent.prior.
+  # El ID 15460715 corresponde al foundation model CheMeleon (ver chemeleon/README).
+  record: "REEMPLAZAR_POR_RECORD_ZENODO"
+  files_checksum: "scripts/checksums.txt"

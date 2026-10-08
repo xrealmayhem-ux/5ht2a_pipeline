@@ -1,0 +1,34 @@
+"""
+Snakemake workflow: 5-HT2A generacion + chemprop-train + filter + admet.
+
+Alcance: docking queda AFUERA (vive en repo aparte docking_5ht2a).
+Salida final de este workflow = input manual de docking/Pharmit.
+
+Uso:
+    cp config/config.yaml.template config/config.yaml  # y editar rutas/record Zenodo
+    snakemake --use-conda --cores 8                     # pipeline completo
+    snakemake --use-conda --cores 4 --config device=cpu generacion__s1_smoke
+    snakemake --dry-run -n                             # solo grafo
+
+Outputs:
+    results/chemprop/pki_curated.csv
+    results/chemprop/checkpoints/seed_{s}/...
+    results/generacion/stage1_1.csv, tl.model, stage2_1.csv
+    results/filter/pharmit_ready.csv + .smi.gz
+    results/admet/admet_predictions.csv + admet_safety_passed.csv
+"""
+
+configfile: "config/config.yaml"
+
+SEEDS = config["chemprop"]["seeds"]
+
+rule all:
+    input:
+        "results/filter/pharmit_ready.csv",
+        "results/filter/pharmit_ready.smi.gz",
+        "results/admet/admet_safety_passed.csv",
+
+include: "rules/chemprop.smk"
+include: "rules/generacion.smk"
+include: "rules/filter.smk"
+include: "rules/admet.smk"

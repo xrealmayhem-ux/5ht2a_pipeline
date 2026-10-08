@@ -1,0 +1,19 @@
+name: smoke
+on: [push, pull_request]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+      - name: Lint snakemake (dry-run sin conda)
+        run: |
+          pip install snakemake==8.20.0 pyyaml==6.0.1
+          cp config/config.yaml.template config/config.yaml
+          snakemake --snakefile workflow/Snakefile --dry-run -n --cores 1
+      - name: Validar configs y envs
+        run: |
+          python -c "import yaml; yaml.safe_load(open('config/config.yaml.template'))"
+          python tests/test_smoke.py

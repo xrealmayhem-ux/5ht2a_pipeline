@@ -1,0 +1,49 @@
+# Config local (no versionar; sí el .template)
+config/config.yaml
+
+# Checkpoints y modelos (van a Zenodo, ver scripts/download_models.sh)
+*.ckpt
+*.pt
+*.chkpt
+*.model
+modelos/
+chemeleon/checkpoints/
+
+# Salidas de pipeline (reproducibles, no versionar)
+results/
+resultados/
+resultados_*/
+output/
+data/output/
+data/input/*.csv
+data/input/*.gz
+*.smi.gz
+tb_*/
+*.log
+
+# Datos crudos grandes (documentar fuente, no commitear)
+data/raw/
+*.xlsx
+
+# Python / envs
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.conda/
+
+# Snakemake
+.snakemake/
+logs/
+
+# Sistema / editores
+*.Zone.Identifier
+*.swp
+.DS_Store
+.vscode/
+.idea/
+
+# Manuscrito y figuras (viven en repo aparte)
+*.pdf
+*.png
+*.svg

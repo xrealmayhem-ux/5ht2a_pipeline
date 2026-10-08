@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "5-HT2A pipeline: generacion + chemprop pKi + filter + ADMET"
+version: 0.1.0
+type: software
+license: MIT
+repository-code: "https://github.com/TU_USUARIO/5ht2a-pipeline"
+keywords: [5-HT2A, REINVENT, Chemprop, CheMeleon, Snakemake, ADMET]
+authors:
+  - family-names: "TU_APELLIDO"
+    given-names: "TU_NOMBRE"

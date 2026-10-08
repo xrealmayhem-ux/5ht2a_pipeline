@@ -1,0 +1,3 @@
+# Binarios: nunca versionar .ckpt/.pt/.chkpt (van a Zenodo).
+# Formato: "<sha256>  <ruta relativa a modelos/>"
+# Generar con: (cd modelos && sha256sum reinvent.prior chemeleon/checkpoints/pki/seed_*/pki-best-*.ckpt > ../scripts/checksums.txt)
