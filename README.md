@@ -42,5 +42,5 @@ snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 ## Reproducibilidad
 
 Envs pineados por rule (`workflow/envs/*.yaml`), seeds fijas
-(`chemprop.seeds: [42,1,2,3,4]`, `seed: 42`), split scaffold persistido
+(`chemprop.seeds: [1,2,3,4,5]`, `seed: 42` solo para smoke), split scaffold persistido
 (`split_indices.csv`).

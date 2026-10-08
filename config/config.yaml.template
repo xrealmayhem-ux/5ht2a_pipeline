@@ -31,7 +31,7 @@ generacion:
   inception_smiles: ""  # opcional
 
 chemprop:
-  seeds: [42, 1, 2, 3, 4]
+  seeds: [1, 2, 3, 4, 5]
   max_epochs: 50
   # Smoke test rápido (no toca checkpoints productivos):
   smoke_limit: 200

@@ -25,6 +25,7 @@ rule generacion__s1:
         s2_steps=config["generacion"]["s2_steps"],
         gen_dir=config["paths"]["generacion_dir"],
         models_dir=config["paths"]["models_dir"],
+        chemprop_dir=config["paths"]["chemprop_dir"],
     conda:
         "envs/generacion.yaml"
     shell:
@@ -34,7 +35,8 @@ rule generacion__s1:
         S2_STEPS={params.s2_steps} \
         PRIOR_FILE={input.prior} TL_SMILES_FILE={input.tl_smiles} \
         SCORER_SCRIPT={params.gen_dir}/scorer_pki.py \
-        CHEMPROP_CHECKPOINT_DIR={params.models_dir}/chemeleon \
+        CHEMPROP_CHEMELEON_DIR={params.models_dir}/chemeleon \
+        CHEMPROP_SOURCE_DIR={params.chemprop_dir} \
         START_STEP=1 STOP_STEP=1 \
         python {params.gen_dir}/run_generacion.py
         """
@@ -55,6 +57,7 @@ rule generacion__tl_s2:
         s2_steps=config["generacion"]["s2_steps"],
         gen_dir=config["paths"]["generacion_dir"],
         models_dir=config["paths"]["models_dir"],
+        chemprop_dir=config["paths"]["chemprop_dir"],
     conda:
         "envs/generacion.yaml"
     shell:
@@ -66,7 +69,8 @@ rule generacion__tl_s2:
         S2_STEPS={params.s2_steps} \
         PRIOR_FILE={input.prior} TL_SMILES_FILE={input.tl_smiles} \
         SCORER_SCRIPT={params.gen_dir}/scorer_pki.py \
-        CHEMPROP_CHECKPOINT_DIR={params.models_dir}/chemeleon \
+        CHEMPROP_CHEMELEON_DIR={params.models_dir}/chemeleon \
+        CHEMPROP_SOURCE_DIR={params.chemprop_dir} \
         START_STEP=2 \
         python {params.gen_dir}/run_generacion.py
         """
