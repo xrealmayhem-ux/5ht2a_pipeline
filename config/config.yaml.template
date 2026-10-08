@@ -57,7 +57,8 @@ admet:
   risk_endpoints: ["hERG", "AMES", "DILI", "Carcinogens_Lagunin"]
 
 zenodo:
-  # DOI / record de los checkpoints pKi + reinvent.prior.
-  # El ID 15460715 corresponde al foundation model CheMeleon (ver chemeleon/README).
-  record: "REEMPLAZAR_POR_RECORD_ZENODO"
+  # Record publicado con los 3 archivos productivos (single seed_2 + stage2).
+  # DOI: https://doi.org/10.5281/zenodo.23249654 — licencia CC-BY-4.0.
+  # El ID 15460715 corresponde al foundation model CheMeleon (externo, solo cita).
+  record: "23249654"
   files_checksum: "scripts/checksums.txt"

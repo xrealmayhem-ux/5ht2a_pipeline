@@ -7,4 +7,6 @@
 # train_predictions.csv.
 3d19d842c10ae75e79bd995a01030fc82fabdda5735a8cdb6d1d3fb7c6bef488  chemeleon/checkpoints/pki/seed_2/pki-best-epoch=16-val_loss=0.3912.ckpt
 90c0b2c2b95aea337c519d7eaa6be94ba44223b9c9ba69afcf43647f121a5a42  chemeleon/checkpoints/pki/seed_2/scaler.pt
-c33ccea4295ab834f95d72689bc9d020231fd6fea0257be43f78c2127d314df0  reinvent_stage2.chkpt
+# NOTA: el stage2.chkpt local (resultados/, sha256 c33cce...) difiere en ~1KB.
+# Canónico = el de Zenodo (record 23249654):
+9b620ef750ed0a9ad563893d924a62633a66c0766045c983fa08d510912b85f2  reinvent_stage2.chkpt

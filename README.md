@@ -26,15 +26,17 @@ módulos ya viven dentro del monorepo.
 ## Uso
 
 ```bash
-cp config/config.yaml.template config/config.yaml  # editar record Zenodo
-bash scripts/download_models.sh --dest modelos
+cp config/config.yaml.template config/config.yaml  # ya trae record 23249654
+bash scripts/download_models.sh --dest modelos --record 23249654
+(cd modelos && sha256sum -c ../scripts/checksums.txt)
 snakemake --snakefile workflow/Snakefile --use-conda --cores 8 --dry-run -n
 snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 ```
 
 ## Modelos (Zenodo, no Git)
 
-3 archivos (~130MB, `sha256sum -c scripts/checksums.txt`):
+DOI: **https://doi.org/10.5281/zenodo.23249654** (licencia CC-BY-4.0; el código
+sigue MIT). 3 archivos (~130MB, `sha256sum -c scripts/checksums.txt`):
 * `chemeleon/checkpoints/pki/seed_2/pki-best-epoch=16-val_loss=0.3912.ckpt` (107M,
   mejor test: RMSE 0.747, R² 0.669) + `scaler.pt`
 * `reinvent_stage2.chkpt` (23M, agente generativo final para muestrear)

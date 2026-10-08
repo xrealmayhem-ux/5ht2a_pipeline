@@ -48,16 +48,21 @@ fi
 
 mkdir -p "$DEST/chemeleon/checkpoints/pki"
 while IFS=$'\t' read -r key url; do
-  # Los .ckpt de pKi van a su seed según el nombre seed_N del record;
-  # train_predictions/scaler igual. stage2 va a la raíz de modelos/.
-  if [[ "$key" == seed_* ]]; then
-    target="$DEST/chemeleon/checkpoints/pki/$key"
-  elif [[ "$key" == reinvent_stage2.chkpt ]]; then
-    target="$DEST/$key"
-  else
-    echo "WARN: archivo inesperado en record: $key (se omite)" >&2
-    continue
-  fi
+  # Mapeo del record 23249654 (nombres planos, Zenodo no acepta "/"):
+  #   pki-best-*.ckpt -> chemeleon/checkpoints/pki/seed_2/<mismo nombre>
+  #   scaler.pt       -> chemeleon/checkpoints/pki/seed_2/scaler.pt
+  #   stage2.chkpt    -> reinvent_stage2.chkpt (canónico: el de Zenodo)
+  case "$key" in
+    pki-best-*.ckpt)
+      target="$DEST/chemeleon/checkpoints/pki/seed_2/$key" ;;
+    scaler.pt)
+      target="$DEST/chemeleon/checkpoints/pki/seed_2/scaler.pt" ;;
+    stage2.chkpt)
+      target="$DEST/reinvent_stage2.chkpt" ;;
+    *)
+      echo "WARN: archivo inesperado en record: $key (se omite)" >&2
+      continue ;;
+  esac
   mkdir -p "$(dirname "$target")"
   echo " -> $target"
   curl -fSL --retry 3 -o "$target" "$url"
