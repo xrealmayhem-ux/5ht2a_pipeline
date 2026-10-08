@@ -1,0 +1,23 @@
+{
+  "inputs": {
+    "gpcrdb_rows": 5696,
+    "chembl_rows": 7697
+  },
+  "valid_rows": {
+    "gpcrdb": 5695,
+    "chembl": 6697,
+    "chembl_converted_ki": 535
+  },
+  "curated_molecules": 5482,
+  "pki_range": {
+    "min": 1.0,
+    "max": 11.0,
+    "median": 7.1
+  },
+  "reference_overlap": {
+    "reference_molecules": 26,
+    "overlap": 10,
+    "fraction_curated": 0.0018241517694272164
+  },
+  "output": "/home/sdageri/p01/chemprop/regressionMPNN_5ht2a/data/pki/pki_curated.csv"
+}

@@ -19,7 +19,11 @@ paths:
   prior_file: "modelos/reinvent.prior"
 
 data:
-  tl_smiles: "../AI_drugdiscovery/generacion/datos/tl_smiles.smi"
+  # Vendorizados en el repo (<1MB total). Para modo transición con los
+  # módulos hermanos, sobreescribe estas rutas en tu config/config.yaml.
+  tl_smiles: "data/tl_smiles.smi"
+  pki_curated: "data/pki/pki_curated.csv"
+  pki_split: "data/pki/split_indices.csv"
   pki_raw_gpcrdb: "../chemprop/regressionMPNN_5ht2a/data/raw/GPCRdb_pvalue.xlsx"
   pki_raw_chembl: "../chemprop/regressionMPNN_5ht2a/data/raw/df_chembl.csv"
 

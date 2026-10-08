@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Descarga modelos desde Zenodo a modelos/ (reemplaza el symlink cross-repo).
-# Uso: bash scripts/download_models.sh --dest modelos
+# Layout creado (coincide con scripts/checksums.txt):
+#   modelos/chemeleon/checkpoints/pki/seed_{1..5}/{pki-best-*.ckpt,scaler.pt,train_predictions.csv}
+#   modelos/reinvent_stage2.chkpt
+# Uso:
+#   bash scripts/download_models.sh --dest modelos --record <ZENODO_RECORD_ID>
+#   (cd modelos && sha256sum -c ../scripts/checksums.txt)
 set -euo pipefail
 
 DEST="modelos"
@@ -14,19 +19,49 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$RECORD" || "$RECORD" == "REEMPLAZAR_POR_RECORD_ZENODO" ]]; then
-  echo "ERROR: define el record Zenodo en config/config.yaml (zenodo.record)" >&2
-  echo "o pásalo con --record <id>. Ver chemeleon/README (foundation 15460715)." >&2
+if [[ -z "$RECORD" ]]; then
+  echo "ERROR: pasa el record Zenodo con --record <id>" >&2
+  echo "(foundation CheMeleon externo: record 15460715, solo como referencia)" >&2
   exit 2
 fi
 
-mkdir -p "$DEST/chemeleon"
-echo "Descargando modelos Zenodo record=$RECORD -> $DEST"
+API="https://zenodo.org/api/records/${RECORD}"
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
 
-# Ejemplo con zenodo_get (ajustar nombres reales al publicar):
-# zenodo_get -r "$RECORD" -o "$DEST"
-# Alternativa curl:
-# curl -L "https://zenodo.org/api/records/${RECORD}/files-archive" -o "${DEST}/models.zip"
+echo "Consultando $API ..."
+FILES="$(curl -fsSL "$API" | python3 -c "
+import json,sys
+d = json.load(sys.stdin)
+for f in d.get('files', d.get('metadata', {}).get('files', [])):
+    key = f.get('key') or f.get('filename')
+    link = f.get('links', {}).get('self') or f.get('download_url') or f.get('url')
+    if key and link:
+        print(f'{key}\t{link}')
+")"
+if [[ -z "$FILES" ]]; then
+  echo "ERROR: sin archivos en el record $RECORD" >&2
+  exit 3
+fi
 
-echo "TODO: completar URLs al publicar el record. Verificá con:"
-echo "  sha256sum -c scripts/checksums.txt"
+mkdir -p "$DEST/chemeleon/checkpoints/pki"
+while IFS=$'\t' read -r key url; do
+  # Los .ckpt de pKi van a su seed según el nombre seed_N del record;
+  # train_predictions/scaler igual. stage2 va a la raíz de modelos/.
+  if [[ "$key" == seed_* ]]; then
+    target="$DEST/chemeleon/checkpoints/pki/$key"
+  elif [[ "$key" == reinvent_stage2.chkpt ]]; then
+    target="$DEST/$key"
+  else
+    echo "WARN: archivo inesperado en record: $key (se omite)" >&2
+    continue
+  fi
+  mkdir -p "$(dirname "$target")"
+  echo " -> $target"
+  curl -fSL --retry 3 -o "$target" "$url"
+done <<< "$FILES"
+
+echo "Verificando sha256 ..."
+(cd "$DEST" && sha256sum -c "$HERE/scripts/checksums.txt")
+echo "OK: modelos descargados y verificados en $DEST"
+echo "Exporta en tu corrida Snakemake:"
+echo "  CHEMPROP_CHEMELEON_DIR=$DEST/chemeleon"

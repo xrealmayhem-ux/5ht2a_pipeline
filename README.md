@@ -34,10 +34,18 @@ snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 
 ## Modelos (Zenodo, no Git)
 
-* `reinvent.prior` (23M), `chemeleon_mp.pt` (34M, Zenodo 15460715),
-  `checkpoints/pki/seed_*/pki-best-*.ckpt` (107M c/u).
-* Nunca commitear `*.ckpt/*.pt`. Publicar record Zenodo y
-  rellenar `scripts/checksums.txt` (`sha256sum`).
+16 archivos (~605MB, `sha256sum -c scripts/checksums.txt`):
+* `chemeleon/checkpoints/pki/seed_{1..5}/pki-best-*.ckpt` (107M c/u, ensemble productivo)
+* `chemeleon/checkpoints/pki/seed_{1..5}/scaler.pt` + `train_predictions.csv`
+  (el scorer exige los 5 `train_predictions.csv` para el umbral p90 de incertidumbre)
+* `reinvent_stage2.chkpt` (23M, agente generativo final para muestrear)
+* NO se suben: `chemeleon_mp.pt` (citar record `15460715`), `reinvent.prior`
+  (externo), `last.ckpt`, `stage1.chkpt`, `tl.model`, CSVs/logs/`tb_*/`.
+
+## Datos versionados en Git (<1MB)
+
+* `data/pki/{pki_curated.csv,split_indices.csv,curation_report.json}`
+* `data/tl_smiles.smi`, `data/examples/stage2_1.csv`
 
 ## Reproducibilidad
 
