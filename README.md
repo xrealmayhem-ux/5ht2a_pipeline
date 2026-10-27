@@ -1,6 +1,5 @@
 # 5-HT2A pipeline (curación → modelo_pki → generación → filtro)
 
-Monorepo Snakemake. **Docking queda afuera** (repo aparte `docking_5ht2a`).
 
 ## Flujo
 
