@@ -7,7 +7,7 @@ config/config.yaml
 *.chkpt
 *.model
 modelos/
-chemeleon/checkpoints/
+modelo_pki/checkpoints/
 
 # Salidas de pipeline (reproducibles, no versionar)
 results/

@@ -1,4 +1,4 @@
-name: chemprop
+name: modelo_pki
 channels:
   - conda-forge
   - defaults

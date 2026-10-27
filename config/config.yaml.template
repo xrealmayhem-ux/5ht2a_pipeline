@@ -1,31 +1,37 @@
 # 5-HT2A pipeline — configuración local (NO versionar valores privados).
-# Copiar desde config.yaml.template y ajustar rutas.
+# Copiar desde config/config.yaml.template y ajustar rutas.
 
 seed: 42
 device: cuda  # cuda | cpu
 
 paths:
-  # Raíz del checkout actual p01 (modo transición: el monorepo orquesta
-  # los módulos que aún viven en carpetas hermanas). En clon fresco,
-  # estos módulos ya viven dentro del monorepo (ver README).
-  repo_root: ".."
-  generacion_dir: "../AI_drugdiscovery/generacion"
-  chemprop_dir: "../chemprop/regressionMPNN_5ht2a/chemeleon"
-  filter_dir: "../filter"
-  admet_dir: "../admet_ai_filter"
-  # Destino de modelos descargados desde Zenodo (reemplaza el symlink
-  # generacion/modelos/chemeleon -> ../../../chemprop/...).
+  repo_root: "."
+  curacion_dir: "curacion"
+  modelo_pki_dir: "modelo_pki"
+  generacion_dir: "generacion"
+  filtro_dir: "filtro"
+  # Destino de modelos descargados desde Zenodo (reemplaza el symlink cross-stage).
   models_dir: "modelos"
   prior_file: "modelos/reinvent.prior"
 
 data:
-  # Vendorizados en el repo (<1MB total). Para modo transición con los
-  # módulos hermanos, sobreescribe estas rutas en tu config/config.yaml.
   tl_smiles: "data/tl_smiles.smi"
   pki_curated: "data/pki/pki_curated.csv"
   pki_split: "data/pki/split_indices.csv"
-  pki_raw_gpcrdb: "../chemprop/regressionMPNN_5ht2a/data/raw/GPCRdb_pvalue.xlsx"
-  pki_raw_chembl: "../chemprop/regressionMPNN_5ht2a/data/raw/df_chembl.csv"
+  pki_raw_gpcrdb: "data/raw/GPCRdb_pvalue.xlsx"
+  pki_raw_chembl: "data/raw/df_chembl.csv"
+
+curacion:
+  # Entrada: datos crudos (data/raw). Salida: data/pki/pki_curated.csv (regla curacion).
+
+modelo_pki:
+  # Productivo: single model seed_2 (mejor test: RMSE 0.747, R2 0.669).
+  # El ensemble 1-5 queda como experimento no publicado; el scorer acepta ambos.
+  seeds: [2]
+  max_epochs: 50
+  # Smoke test rápido (no toca checkpoints productivos):
+  smoke_limit: 200
+  smoke_epochs: 1
 
 generacion:
   batch_size: 256
@@ -34,27 +40,12 @@ generacion:
   s2_steps: 1000
   inception_smiles: ""  # opcional
 
-chemprop:
-  # Productivo: single model seed_2 (mejor test). El ensemble 1-5 queda
-  # como experimento no publicado; el scorer acepta ambos.
-  seeds: [2]
-  max_epochs: 50
-  # Smoke test rápido (no toca checkpoints productivos):
-  smoke_limit: 200
-  smoke_epochs: 1
-
-filter:
+filtro:
   score_cutoff: null  # ej. 0.5 para filtrar Score REINVENT
   max_mols: null
   max_stereoisomers: 8
   sa_score_cutoff: 4.5
   smiles_col: "SMILES"
-
-admet:
-  smiles_col: "SMILES"
-  risk_cutoff: 0.50
-  # Endpoints de exclusión dura (filter_safety.py):
-  risk_endpoints: ["hERG", "AMES", "DILI", "Carcinogens_Lagunin"]
 
 zenodo:
   # Record publicado con los 3 archivos productivos (single seed_2 + stage2).

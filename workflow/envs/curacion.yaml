@@ -1,4 +1,4 @@
-name: admet
+name: curacion
 channels:
   - conda-forge
   - defaults
@@ -6,7 +6,7 @@ dependencies:
   - python=3.11
   - pip
   - pip:
-      - admet-ai==2.0.1
-      - pandas==2.2.2
       - rdkit==2024.03.6
+      - pandas==2.2.2
       - numpy==1.26.4
+      - pyyaml==6.0.1

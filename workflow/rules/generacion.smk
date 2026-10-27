@@ -1,6 +1,6 @@
 # Reglas generación REINVENT4 (staged learning).
 # run_generacion.py hoy es monolítico; se invoca por etapas vía START_STEP + OUT_DIR.
-# Requiere modelos descargados (rule download_models) y env reinvent4 + chemprop.
+# Requiere modelos descargados (rule download_models) y envs reinvent4 + modelo_pki.
 
 rule download_models:
     output:
@@ -25,7 +25,7 @@ rule generacion__s1:
         s2_steps=config["generacion"]["s2_steps"],
         gen_dir=config["paths"]["generacion_dir"],
         models_dir=config["paths"]["models_dir"],
-        chemprop_dir=config["paths"]["chemprop_dir"],
+        chemprop_dir=config["paths"]["modelo_pki_dir"],
     conda:
         "envs/generacion.yaml"
     shell:
@@ -57,15 +57,14 @@ rule generacion__tl_s2:
         s2_steps=config["generacion"]["s2_steps"],
         gen_dir=config["paths"]["generacion_dir"],
         models_dir=config["paths"]["models_dir"],
-        chemprop_dir=config["paths"]["chemprop_dir"],
+        chemprop_dir=config["paths"]["modelo_pki_dir"],
     conda:
         "envs/generacion.yaml"
     shell:
         """
         OUT_DIR=results/generacion DEVICE={params.device} \
         BATCH_SIZE={params.batch} \
-        S1_STEPS={params.s1_steps} \
-        TL_EPOCHS={params.tl_epochs} \
+        S1_STEPS={params.s1_steps} TL_EPOCHS={params.tl_epochs} \
         S2_STEPS={params.s2_steps} \
         PRIOR_FILE={input.prior} TL_SMILES_FILE={input.tl_smiles} \
         SCORER_SCRIPT={params.gen_dir}/scorer_pki.py \

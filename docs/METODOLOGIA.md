@@ -1,15 +1,12 @@
 # Metodología (resumen para el monorepo)
 
-1. **Chemprop pKi**: fine-tune CheMeleon (`chemeleon_mp.pt`) sobre binding
-   humano GPCRdb+ChEMBL, split scaffold Murcko estratificado 70/15/15,
-   ensemble 5 seeds. Métricas declaradas: RMSE~0.765, R²~0.653.
-2. **Generación REINVENT4 staged**: S1 (QED+TPSA) -> TL (tl_smiles.smi) ->
-   S2 (Chemprop pKi 0.35 + QED/TPSA/SlogP/HBD + alerts + Murcko).
-3. **Filter**: sanitize RDKit, dedup InChIKey, tautómeros, CNS
-   (MW≤500, LogP 1-5, HBD≤3, HBA≤7, RotB≤8, TPSA 15-120), PAINS/BRENK/REOS,
-   SA≤4.5, enumeración estéreo ≤8, export `.smi.gz` Pharmit-ready.
-4. **ADMET-AI v2.0.1**: predict + regla dura
-   hERG/AMES/DILI/Carcinogens_Lagunin ≥0.50.
+Flujo completo: **curación → modelo_pki → generación → filtro** (entrenamiento → generación → filtro).
 
-El filtro prioriza drug-like/diversidad; no demuestra actividad experimental.
-Detalle completo en `filter/README.md` y `admet_ai_filter/README.md` originales.
+1. **Curación (`curacion/`)**: preparación curada de pKi a partir de GPCRdb + ChEMBL (Ki → pKi). Salida: `results/curacion/pki_curated.csv`.
+2. **Entrenamiento / modelo (`modelo_pki/`)**: fine-tune del modelo CheMeleon sobre la curación (scaffold split persistido). Salida: `results/modelo_pki/checkpoints/...`.
+3. **Generación (`generacion/`)**: REINVENT4 staged learning (S1: QED+TPSA → TL → S2: Chemprop pKi + filters). Salida: `results/generacion/stage2_1.csv`.
+4. **Filtro (`filtro/`)**: sanitize, dedup, tautómeros, CNS, alertas, SA Score, stereo, export pharmit-ready. Salida: `results/filtro/pharmit_ready.csv` + `.smi.gz`.
+
+El filtro prioriza drug-like/diversidad; no demuestra actividad experimental frente a 5-HT2A.
+
+Docking queda en repo aparte `docking_5ht2a`; el output final de este workflow (filtro) es el input manual de docking/Pharmit.

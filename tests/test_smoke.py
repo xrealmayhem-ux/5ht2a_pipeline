@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_snakefile_includes_all_rules():
     text = (ROOT / "workflow" / "Snakefile").read_text()
-    for r in ["rules/chemprop.smk", "rules/generacion.smk", "rules/filter.smk", "rules/admet.smk"]:
+    for r in ["rules/curacion.smk", "rules/modelo_pki.smk", "rules/generacion.smk", "rules/filtro.smk"]:
         assert r in text, f"falta include {r}"
 
 def test_no_docking_rules():
@@ -20,6 +20,9 @@ def test_envs_pinned():
     for env in (ROOT / "workflow" / "envs").glob("*.yaml"):
         text = env.read_text()
         assert "==" in text, f"{env.name} debe pinear versiones con =="
+    for banned in ["admet"]:
+        for env in (ROOT / "workflow" / "envs").glob("*.yaml"):
+            assert banned not in env.name, f"env de admet debe quedar fuera (hallado {env.name})"
 
 def test_gitignore_bloquea_ckpt():
     gi = (ROOT / ".gitignore").read_text()

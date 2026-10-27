@@ -19,5 +19,5 @@
     "overlap": 10,
     "fraction_curated": 0.0018241517694272164
   },
-  "output": "/home/sdageri/p01/chemprop/regressionMPNN_5ht2a/data/pki/pki_curated.csv"
+  "output": "/home/sdageri/p01/5ht2a-pipeline/data/pki/pki_curated.csv"
 }

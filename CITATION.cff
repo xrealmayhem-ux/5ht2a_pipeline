@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "5-HT2A pipeline: generacion + chemprop pKi + filter + ADMET"
+title: "5-HT2A pipeline: curacion + modelo_pki + generacion + filtro"
 version: 0.1.0
 type: software
 license: MIT

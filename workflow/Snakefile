@@ -1,8 +1,14 @@
 """
-Snakemake workflow: 5-HT2A generacion + chemprop-train + filter + admet.
+Snakemake workflow: 5-HT2A curacion -> modelo_pki -> generacion -> filtro.
 
-Alcance: docking queda AFUERA (vive en repo aparte docking_5ht2a).
-Salida final de este workflow = input manual de docking/Pharmit.
+Flujo (entrenamiento -> generacion -> filtro):
+    1. curacion:   curación de pKi (GPCRdb + ChEMBL) -> results/curacion/pki_curated.csv
+    2. modelo_pki: fine-tune del modelo CheMeleon -> results/modelo_pki/checkpoints/...
+    3. generacion: REINVENT4 staged learning (S1 -> TL -> S2) -> results/generacion/stage2_1.csv
+    4. filtro:     filtros químicos + export pharmit-ready -> results/filtro/pharmit_ready.*
+
+Docking queda AFUERA (repo aparte `docking_5ht2a`). El output final de este
+workflow (filtro) es el input manual de docking/Pharmit.
 
 Uso:
     cp config/config.yaml.template config/config.yaml  # y editar rutas/record Zenodo
@@ -11,24 +17,19 @@ Uso:
     snakemake --dry-run -n                             # solo grafo
 
 Outputs:
-    results/chemprop/pki_curated.csv
-    results/chemprop/checkpoints/seed_{s}/...
-    results/generacion/stage1_1.csv, tl.model, stage2_1.csv
-    results/filter/pharmit_ready.csv + .smi.gz
-    results/admet/admet_predictions.csv + admet_safety_passed.csv
+    results/filtro/pharmit_ready.csv + .smi.gz
 """
 
 configfile: "config/config.yaml"
 
-SEEDS = config["chemprop"]["seeds"]
+SEEDS = config["modelo_pki"]["seeds"]
 
 rule all:
     input:
-        "results/filter/pharmit_ready.csv",
-        "results/filter/pharmit_ready.smi.gz",
-        "results/admet/admet_safety_passed.csv",
+        "results/filtro/pharmit_ready.csv",
+        "results/filtro/pharmit_ready.smi.gz",
 
-include: "rules/chemprop.smk"
+include: "rules/curacion.smk"
+include: "rules/modelo_pki.smk"
 include: "rules/generacion.smk"
-include: "rules/filter.smk"
-include: "rules/admet.smk"
+include: "rules/filtro.smk"

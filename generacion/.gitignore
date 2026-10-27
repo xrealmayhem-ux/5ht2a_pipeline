@@ -1,0 +1,10 @@
+resultados/
+__pycache__/
+*.log
+*.chkpt
+*.toml
+*.json
+tb_*/
+tl_train.smi
+tl_val.smi
+tl.model*
