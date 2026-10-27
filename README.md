@@ -32,7 +32,7 @@ snakemake --snakefile workflow/Snakefile --use-conda --cores 8 --dry-run -n
 snakemake --snakefile workflow/Snakefile --use-conda --cores 8
 ```
 
-## Modelos (Zenodo, no Git)
+## Modelos (Zenodo)
 
 DOI: **https://doi.org/10.5281/zenodo.23249654** (licencia CC-BY-4.0; el código
 sigue MIT). 3 archivos (~130MB, `sha256sum -c scripts/checksums.txt`):
